@@ -44,23 +44,19 @@ const aboutSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    skills:{
-        type:Array,
-        required:true
-    },
+    
 })
 
-// const skillSchema = new mongoose.Schema({
-//     skillName:{
-//         type:String,
-//         required:true
-//     },
-//     skillImage:{
-//         type:String,
-
-//         required:true
-//     }
-// })
+const skillSchema = new mongoose.Schema({
+    skillName:{
+        type:String,
+        required:true
+    },
+    skillImage:{
+        type:String,
+        required:true
+    }
+})
 
 const experienceSchema = new mongoose.Schema({
     title:{
@@ -154,6 +150,7 @@ const contactSchema = new mongoose.Schema({
 module.exports = {
     Intro : mongoose.model("intros" , introSchema),
     About : mongoose.model("abouts" , aboutSchema),
+    Skills : mongoose.model("skills" , skillSchema),
     Experience : mongoose.model("experiences" , experienceSchema),
     Project : mongoose.model("projects" , projectsSchema),
     Education : mongoose.model("educations" , educationSchema),
