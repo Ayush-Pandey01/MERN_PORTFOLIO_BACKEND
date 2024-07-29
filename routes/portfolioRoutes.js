@@ -1,4 +1,4 @@
-const {Intro,About,Experience,Project,Education,Contact} = require('../models/portfolioModel.js')
+const {Intro,About,Experience,Project,Education,Contact,Skills} = require('../models/portfolioModel.js')
 const router = require('express').Router();
 const {User} = require('../models/userModel.js')
 
@@ -82,6 +82,7 @@ router.get('/get-portfolio-data', async(req,res)=>{
     try {
         const intros = await Intro.find();
         const abouts = await About.find();
+        const skills = await Skills.find();
         const experiences = await Experience.find();
         const projects = await Project.find();
         const educations = await Education.find();
@@ -91,6 +92,7 @@ router.get('/get-portfolio-data', async(req,res)=>{
         res.status(200).send({
             intro:intros[0],
             about:abouts[0],
+            skills:skills,
             experiences:experiences,
             projects:projects,
             educations:educations,
@@ -100,6 +102,69 @@ router.get('/get-portfolio-data', async(req,res)=>{
         res.status(500).send(error)
     }
 });
+
+
+
+// Add Skills
+
+
+router.post('/add-skill',async(req,res)=>{
+    try {
+        const skill = new Skills(req.body);
+        console.log(req.body)
+        await skill.save()
+        res.status(200).send({
+            data:skill,
+            success:true,
+            message:"Skill Added Successfully"
+        });
+    } catch (error) {
+        res.status(500).send(error);
+        console.log(error)
+    }
+    
+})
+
+
+// Updating The Skill section
+
+
+router.post('/update-skill',async(req,res)=>{
+    try {
+        const skill = await Skills.findOneAndUpdate(
+            {_id:req.body._id},
+            req.body,
+            {new:true}
+
+        );
+        res.status(200).send(
+           {
+             data:skill,
+             success:true,
+             message:"Skill Updated Successfully"
+           }
+        )
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
+    
+})
+
+
+
+router.post("/delete-skill",async(req,res)=>{
+    try {
+        const skill = await Skills.findByIdAndDelete({_id:req.body._id})
+        res.status(200).send({
+        data:skill,
+        success:true,
+        message:"skill Deleted Successfully"
+    })
+    } catch (error) {
+      res.status(500).send(error)  
+    }
+})
 
 
 // Add New Experience
@@ -123,7 +188,7 @@ router.post('/add-experience',async(req,res)=>{
 })
 
 
-// Update Routes
+// Update experience Routes
 
 router.post("/update-experience",async(req,res)=>{
     try {
